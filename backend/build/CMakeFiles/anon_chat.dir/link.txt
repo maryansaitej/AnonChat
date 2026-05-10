@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/anon_chat.dir/src/main.cpp.o CMakeFiles/anon_chat.dir/src/room.cpp.o CMakeFiles/anon_chat.dir/src/user.cpp.o -o anon_chat

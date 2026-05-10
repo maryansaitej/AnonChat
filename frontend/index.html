@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Anonymous realtime room chat">
+    <title>Anonymous Realtime Chat</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="landing" class="landing-view">
+        <div class="brand-panel">
+          <p class="eyebrow">Anonymous realtime rooms</p>
+          <h1>Start a private room in seconds.</h1>
+          <p class="lede">Ephemeral chat with no accounts, no database, and room state that disappears when the last person leaves.</p>
+        </div>
+
+        <form id="joinForm" class="join-panel" autocomplete="off">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" minlength="2" maxlength="24" placeholder="e.g. Ada" required>
+
+          <label for="roomCode">Room code</label>
+          <input id="roomCode" name="roomCode" type="text" minlength="4" maxlength="12" placeholder="ABCD12">
+
+          <details class="settings">
+            <summary>Connection</summary>
+            <label for="backendUrl">Backend URL</label>
+            <input id="backendUrl" name="backendUrl" type="url" placeholder="https://your-service.onrender.com">
+          </details>
+
+          <div class="button-row">
+            <button type="button" id="createRoomBtn" class="primary">Create room</button>
+            <button type="submit" id="joinRoomBtn">Join room</button>
+          </div>
+
+          <p id="landingError" class="error-message" role="alert" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="chat" class="chat-view hidden" aria-live="polite">
+        <header class="chat-header">
+          <div>
+            <p class="eyebrow">Room <span id="activeRoom">------</span></p>
+            <h2 id="activeName">Anonymous</h2>
+          </div>
+          <button id="leaveBtn" class="danger">Leave</button>
+        </header>
+
+        <div class="chat-layout">
+          <aside class="users-panel">
+            <div class="panel-title">
+              <span>Online</span>
+              <span id="userCount">0</span>
+            </div>
+            <ul id="usersList" class="users-list"></ul>
+          </aside>
+
+          <section class="messages-panel">
+            <div id="messages" class="messages" aria-live="polite"></div>
+            <p id="typingIndicator" class="typing-indicator"></p>
+            <form id="messageForm" class="message-form" autocomplete="off">
+              <input id="messageInput" type="text" maxlength="500" placeholder="Message this room" required>
+              <button type="submit" class="primary">Send</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="message-meta">
+          <strong class="message-user"></strong>
+          <time class="message-time"></time>
+        </div>
+        <p class="message-text"></p>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/CMakeFiles/asio-populate"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/CMakeFiles/asio-populate.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/CMakeFiles/asio-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-build.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-download.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-install.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-patch_disconnected.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-test.rule"
+		},
+		{
+			"file" : "/Users/maryansaitej/Documents/Codex/2026-05-10/you-are-a-senior-full-stack/backend/build/_deps/asio-subbuild/asio-populate-prefix/src/asio-populate-stamp/asio-populate-update_disconnected.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"asio-populate"
+		],
+		"name" : "asio-populate"
+	}
+}
