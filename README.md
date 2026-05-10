@@ -1,49 +1,56 @@
 # AnonChat
 
-AnonChat is a production-ready anonymous realtime web chat application built with a static vanilla frontend and a modern C++17 WebSocket backend. It supports ephemeral multi-user rooms without accounts, authentication, cookies, or a database.
+**AnonChat** is a production-ready anonymous realtime web chat application built with a static vanilla frontend and a modern C++17 WebSocket backend.
 
-Rooms and messages live in server memory only. When the final user leaves a room, the room is deleted. When the backend restarts, all chat state disappears.
+It supports ephemeral multi-user chat rooms with **no authentication**, **no database**, and **RAM-only storage**. Rooms and messages exist only while users are connected.
+
+---
 
 ## Features
 
-- Anonymous chat with username and room code
-- Realtime messaging over WebSockets
-- Multiple independent rooms
-- Multiple users per room
-- Online users list
-- Typing indicator
-- Leave room flow
-- Responsive dark theme UI
-- Random room code generation
-- Thread-safe in-memory room handling
-- Message length limit
-- Anti-spam cooldown
-- Max room size enforcement
-- Input validation
-- JSON WebSocket protocol
-- Dockerized backend for Render
-- Static frontend for GitHub Pages
+- **Anonymous chat** with username and room code
+- **Realtime messaging** using WebSockets
+- **Multiple rooms** supported
+- **Multiple users per room**
+- **Online users list**
+- **Typing indicator**
+- **Leave room** functionality
+- **Responsive dark theme UI**
+- **Random room code generation**
+- **Thread-safe room handling**
+- **Message length limit**
+- **Anti-spam cooldown**
+- **Max room size enforcement**
+- **Input validation**
+- **JSON WebSocket protocol**
+- **Dockerized backend**
+- **GitHub Pages frontend deployment**
+- **Render backend deployment**
+
+---
 
 ## Tech Stack
 
-Frontend:
+### Frontend
 
 - HTML
 - CSS
 - Vanilla JavaScript
 
-Backend:
+### Backend
 
-- C++17
-- Crow C++ framework
+- Modern C++17
+- Crow C++ Framework
 - WebSockets
 - CMake
 - Docker
 
-Deployment:
+### Deployment
 
-- GitHub Pages for the frontend
-- Render Docker Web Service for the backend
+- GitHub Pages
+- Render Docker Web Service
+
+---
 
 ## Project Structure
 
@@ -70,24 +77,53 @@ AnonChat/
 └── README.md
 ```
 
+---
+
+## Architecture
+
+AnonChat is split into two deployable parts:
+
+| Layer | Technology | Deployment |
+|---|---|---|
+| Frontend | HTML, CSS, Vanilla JS | GitHub Pages |
+| Backend | C++17, Crow, WebSockets | Render Docker Web Service |
+| Storage | RAM only | Cleared on restart |
+
+The frontend is served as static files. The backend manages rooms, connected users, WebSocket messages, typing indicators, and room cleanup entirely in memory.
+
+---
+
 ## How It Works
 
-AnonChat has two separate deployable parts:
+1. A user enters a **username** and **room code**.
+2. The browser opens a WebSocket connection to the backend.
+3. The backend validates the username and room code.
+4. The user is added to the matching in-memory room.
+5. Messages are broadcast only to users in the same room.
+6. When a user disconnects, they are removed from the room.
+7. When a room becomes empty, it is deleted automatically.
 
-1. The frontend is a static web app hosted on GitHub Pages.
-2. The backend is a C++ WebSocket server hosted on Render using Docker.
+No accounts, sessions, cookies, or databases are used.
 
-Users enter a username and room code. The browser opens a WebSocket connection to the backend:
+---
+
+## WebSocket URL Format
+
+Local development:
+
+```text
+ws://localhost:18080/ws?room=ROOMCODE&username=USERNAME
+```
+
+Production:
 
 ```text
 wss://YOUR_RENDER_SERVICE.onrender.com/ws?room=ROOMCODE&username=USERNAME
 ```
 
-The backend validates the connection, adds the user to the requested room, and broadcasts room events only to users in that room.
+---
 
-No messages are persisted. No database is used.
-
-## Local Development
+## Local Setup
 
 ### Prerequisites
 
@@ -96,25 +132,25 @@ Install:
 - CMake
 - A C++17 compiler
 - Git
-- Python 3, for serving the frontend locally
-- Docker, optional but recommended
+- Python 3
+- Docker, optional
 
-On macOS:
+### macOS
 
 ```bash
 brew install cmake
 ```
 
-On Ubuntu:
+### Ubuntu
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential cmake git
 ```
 
-## Build The Backend Locally
+---
 
-From the backend directory:
+## Build Backend Locally
 
 ```bash
 cd backend
@@ -123,7 +159,9 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel
 ```
 
-Run the backend:
+---
+
+## Run Backend Locally
 
 ```bash
 PORT=18080 CORS_ORIGIN=http://localhost:8000 ./build/anon_chat
@@ -138,7 +176,9 @@ curl http://localhost:18080/api/health
 Expected response:
 
 ```json
-{"status":"ok"}
+{
+  "status": "ok"
+}
 ```
 
 Create a room:
@@ -147,13 +187,9 @@ Create a room:
 curl -X POST http://localhost:18080/api/rooms
 ```
 
-Example response:
+---
 
-```json
-{"roomCode":"ABCD12"}
-```
-
-## Run The Frontend Locally
+## Run Frontend Locally
 
 Open a second terminal:
 
@@ -168,15 +204,17 @@ Open:
 http://localhost:8000
 ```
 
-In the app, expand `Connection` and use:
+In the app, expand **Connection** and use:
 
 ```text
 http://localhost:18080
 ```
 
+---
+
 ## Docker
 
-Build the backend image:
+Build the image:
 
 ```bash
 cd backend
@@ -189,117 +227,93 @@ Run the container:
 docker run --rm -p 18080:18080 -e PORT=18080 -e CORS_ORIGIN=http://localhost:8000 anonchat-backend
 ```
 
-Then test:
+Test:
 
 ```bash
 curl http://localhost:18080/api/health
 ```
 
-## Deployment
+---
 
-### Backend: Render
+## Deploy Backend To Render
 
 1. Push this repository to GitHub.
-2. Create a new Render `Web Service`.
-3. Connect the GitHub repository.
-4. Select `Docker` as the runtime.
-5. Set the root directory to:
+2. Open Render.
+3. Create a new **Web Service**.
+4. Connect your GitHub repository.
+5. Select **Docker** as the runtime.
+6. Set the root directory to:
 
 ```text
 backend
 ```
 
-6. Add environment variables:
+7. Add environment variables:
 
 ```text
 PORT=18080
 CORS_ORIGIN=https://YOUR_GITHUB_USERNAME.github.io
 ```
 
-7. Deploy.
-8. Copy the Render service URL:
+8. Deploy the service.
+9. Copy your Render backend URL:
 
 ```text
 https://YOUR_RENDER_SERVICE.onrender.com
 ```
 
-Render terminates TLS automatically, so the frontend will connect with `wss://` for WebSockets.
+Render supports WebSockets and automatically provides HTTPS. The frontend will connect using `wss://`.
 
-### Frontend: GitHub Pages
+---
 
-1. Go to repository `Settings`.
-2. Open `Pages`.
-3. Select deployment from a branch.
-4. Publish the `frontend` folder if available.
-5. If GitHub Pages does not offer `frontend` as a source folder, move the frontend files to `docs/` or use a GitHub Actions Pages workflow.
-6. Open the deployed GitHub Pages URL.
-7. Expand `Connection`.
-8. Enter your Render backend URL:
+## Deploy Frontend To GitHub Pages
+
+1. Open your GitHub repository.
+2. Go to **Settings**.
+3. Open **Pages**.
+4. Select **Deploy from a branch**.
+5. Choose your main branch.
+6. Publish the `frontend` folder if available.
+7. If GitHub Pages does not offer `frontend`, move the frontend files to `docs/` or use GitHub Actions.
+8. Open your GitHub Pages URL.
+9. Expand **Connection**.
+10. Enter your Render backend URL:
 
 ```text
 https://YOUR_RENDER_SERVICE.onrender.com
 ```
 
-## WebSocket Protocol
-
-Client to server:
-
-```json
-{"type":"message","text":"Hello"}
-```
-
-```json
-{"type":"typing","active":true}
-```
-
-Server to client:
-
-```json
-{"type":"message","username":"Ada","text":"Hello","timestamp":"2026-05-10T12:00:00Z"}
-```
-
-```json
-{"type":"users","users":["Ada","Grace"]}
-```
-
-```json
-{"type":"typing","username":"Grace","active":true}
-```
-
-```json
-{"type":"system","text":"Ada joined."}
-```
-
-```json
-{"type":"error","error":"You are sending messages too quickly."}
-```
-
-## Backend Constraints
-
-- Username length: 2-24 characters
-- Room code length: 4-12 characters
-- Message length: 500 characters
-- Raw WebSocket payload limit: 2048 bytes
-- Anti-spam cooldown: 650 ms
-- Max room size: 50 users
-- Storage: RAM only
-- Persistence: none
+---
 
 ## Security And Privacy
 
-AnonChat is intentionally anonymous and ephemeral. It does not provide user accounts, private identity, moderation tools, encryption beyond HTTPS/WSS transport, or persistent message history.
+AnonChat is intentionally anonymous and ephemeral.
+
+It does not provide:
+
+- User accounts
+- Authentication
+- Persistent message history
+- Database storage
+- Moderation tools
+- End-to-end encryption
 
 For production use:
 
-- Deploy the backend behind HTTPS.
+- Deploy the backend over HTTPS.
+- Use `wss://` WebSockets in production.
 - Set `CORS_ORIGIN` to the exact GitHub Pages origin.
 - Keep message and room limits enabled.
 - Do not treat room codes as strong secrets.
 - Do not use this app for sensitive or regulated communication.
 
+---
+
 ## Troubleshooting
 
-If CMake cannot find `asio.hpp`, remove the old build directory and rebuild:
+### CMake Cannot Find `asio.hpp`
+
+Remove the old build directory and rebuild:
 
 ```bash
 cd backend
@@ -308,20 +322,28 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel
 ```
 
-If the frontend cannot connect:
+### Frontend Cannot Connect
 
-- Confirm the backend is running.
-- Confirm the backend URL in the frontend Connection field is correct.
-- For local development, use `http://localhost:18080`.
-- For GitHub Pages, use the Render `https://` URL.
-- Confirm `CORS_ORIGIN` matches the frontend origin.
+Check:
 
-If Docker asks for `quote>` in the terminal, cancel with `Ctrl+C` and run the command as one line:
+- Backend is running.
+- Backend URL is correct.
+- Local backend URL is `http://localhost:18080`.
+- Production backend URL is your Render `https://` URL.
+- `CORS_ORIGIN` matches the frontend origin.
+
+### Docker Shows `quote>`
+
+Cancel with `Ctrl+C`, then run the Docker command as one line:
 
 ```bash
 docker run --rm -p 18080:18080 -e PORT=18080 -e CORS_ORIGIN=http://localhost:8000 anonchat-backend
 ```
 
+---
+
 ## License
 
-This project is provided as an educational full-stack realtime systems project. Add a license file before publishing or distributing it for public reuse.
+This project is currently unlicensed.
+
+Add a license before publishing or distributing it for public reuse.
